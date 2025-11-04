@@ -6,46 +6,238 @@
 <title>ВТСТ.LIVE — Квест «Разные — но вместе»</title>
 <style>
   :root{
-    --bg:#0f172a; --panel:#0b1220; --card:#111827; --text:#e5e7eb; --muted:#94a3b8;
-    --accent1:#22d3ee; --accent2:#60a5fa; --accent3:#8b5cf6; --positive:#22c55e; --warn:#f59e0b; --danger:#ef4444;
+    --bg:#050b17;
+    --panel:#071325;
+    --card:#091a2e;
+    --text:#f9fafb;
+    --muted:#9ca3af;
+    --accent1:#0ea5e9;
+    --accent2:#2563eb;
+    --accent3:#f97316;
+    --positive:#22c55e;
+    --warn:#f59e0b;
+    --danger:#ef4444;
   }
+
   *{box-sizing:border-box}
-  body{margin:0;background:radial-gradient(80% 60% at 50% 0%,#101a34 0%,var(--bg) 60%); color:var(--text); font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+
+  body{
+    margin:0;
+    background:
+      radial-gradient(100% 120% at 0% 0%,rgba(37,99,235,0.35) 0,transparent 40%),
+      radial-gradient(120% 120% at 100% 0%,rgba(14,165,233,0.3) 0,transparent 45%),
+      radial-gradient(80% 60% at 50% 90%,#020617 0,var(--bg) 55%);
+    color:var(--text);
+    font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+  }
+
   .wrap{max-width:860px;margin:0 auto;padding:20px}
   header{display:flex;align-items:center;gap:14px;padding:14px 0 6px}
-  .logo{width:42px;height:42px;border-radius:10px;background:linear-gradient(135deg,var(--accent1),var(--accent3));display:grid;place-items:center;box-shadow:0 6px 20px rgba(0,0,0,.25)}
-  .logo span{font-weight:800;letter-spacing:.5px}
-  h1{font-size:clamp(20px,4vw,28px);margin:4px 0 2px}
+  .logo{
+    width:48px;height:48px;border-radius:14px;
+    background:conic-gradient(from 210deg,var(--accent2),var(--accent1),var(--accent3),var(--accent2));
+    display:grid;place-items:center;
+    box-shadow:0 10px 28px rgba(15,23,42,.65);
+    cursor:pointer; /* для «секретного» двойного клика */
+  }
+  .logo span{
+    font-weight:900;
+    letter-spacing:.8px;
+    font-size:14px;
+    text-shadow:0 1px 3px rgba(0,0,0,.6);
+  }
+
+  h1{
+    font-size:clamp(20px,4vw,30px);
+    margin:4px 0 2px;
+  }
+
   .sub{color:var(--muted);font-size:14px}
-  main{background:linear-gradient(180deg,rgba(255,255,255,.02),rgba(255,255,255,.01));border:1px solid rgba(255,255,255,.06);border-radius:16px;padding:16px;box-shadow:0 12px 32px rgba(0,0,0,.25)}
+  #slogan{color:#e5e7eb;font-size:13px;margin-top:4px;opacity:.9}
+
+  main{
+    background:linear-gradient(180deg,rgba(15,23,42,.7),rgba(15,23,42,.9));
+    border:1px solid rgba(148,163,184,.25);
+    border-radius:20px;
+    padding:16px;
+    box-shadow:0 20px 50px rgba(15,23,42,.9);
+  }
+
   section{display:none}
   section.active{display:block}
-  .panel{background:var(--card);border:1px solid rgba(255,255,255,.06);border-radius:14px;padding:16px;margin-top:12px}
+
+  .panel{
+    background:var(--card);
+    border:1px solid rgba(148,163,184,.35);
+    border-radius:16px;
+    padding:16px;
+    margin-top:12px;
+    box-shadow:0 12px 32px rgba(15,23,42,.8);
+  }
+
   .row{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
-  input,button,select{font:inherit;color:inherit}
-  input[type="text"]{width:100%;padding:12px 14px;border-radius:10px;border:1px solid rgba(255,255,255,.15);background:#0b1020;color:var(--text)}
-  button{border:0;padding:12px 16px;border-radius:10px;background:linear-gradient(135deg,var(--accent2),var(--accent3));color:#0b1020;font-weight:700;cursor:pointer;box-shadow:0 8px 20px rgba(0,0,0,.25)}
-  button.ghost{background:transparent;border:1px solid rgba(255,255,255,.18);color:var(--text)}
   .grid{display:grid;gap:12px}
-  .qbox{padding:14px;border-radius:12px;background:#0c1428;border:1px solid rgba(255,255,255,.07)}
+
+  input,button,select{font:inherit;color:inherit}
+
+  input[type="text"]{
+    width:100%;
+    padding:12px 14px;
+    border-radius:12px;
+    border:1px solid rgba(148,163,184,.6);
+    background:#020617;
+    color:var(--text);
+    outline:none;
+    transition:border .15s,box-shadow .15s,background .15s;
+  }
+  input[type="text"]:focus{
+    border-color:var(--accent1);
+    box-shadow:0 0 0 1px rgba(56,189,248,.4);
+    background:#020617;
+  }
+
+  button{
+    border:0;
+    padding:12px 16px;
+    border-radius:999px;
+    background:linear-gradient(135deg,var(--accent2),var(--accent1));
+    color:#020617;
+    font-weight:700;
+    cursor:pointer;
+    box-shadow:0 10px 26px rgba(15,23,42,.9);
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    transition:transform .1s,box-shadow .1s,background .2s;
+  }
+  button.ghost{
+    background:transparent;
+    border-radius:999px;
+    border:1px solid rgba(148,163,184,.7);
+    color:var(--text);
+    box-shadow:none;
+  }
+  button:disabled{
+    opacity:.5;
+    cursor:default;
+    box-shadow:none;
+  }
+  @media (hover:hover){
+    button:not(:disabled):hover{
+      transform:translateY(-1px);
+      box-shadow:0 14px 34px rgba(15,23,42,1);
+    }
+  }
+
+  .qbox{
+    padding:14px;
+    border-radius:14px;
+    background:#020617;
+    border:1px solid rgba(148,163,184,.35);
+  }
+
   .answers{display:grid;gap:10px;margin-top:10px}
-  .answers button{background:#16213a;border:1px solid rgba(255,255,255,.08)}
-  .answers button.correct{outline:2px solid var(--positive)}
-  .answers button.wrong{outline:2px solid var(--danger)}
-  .meta{display:flex;justify-content:space-between;align-items:center;gap:8px;color:var(--muted);font-size:14px;margin-top:8px}
-  .tag{padding:4px 8px;border-radius:999px;border:1px solid rgba(255,255,255,.18)}
-  .sortable{list-style:none;margin:0;padding:0;display:grid;gap:8px}
-  .sortable li{padding:12px;border-radius:10px;background:#16213a;border:1px solid rgba(255,255,255,.08);cursor:grab}
-  .tiles{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:10px}
-  .tile{min-width:44px;padding:10px 14px;border-radius:10px;background:#16213a;border:1px solid rgba(255,255,255,.08);font-weight:800;letter-spacing:1px;cursor:pointer}
-  .tile.used{opacity:.45}
-  .code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.5px}
-  canvas{max-width:100%;height:auto;border-radius:14px;border:1px solid rgba(255,255,255,.08);background:#0b1020}
+  .answers button{
+    background:#02081a;
+    border-radius:999px;
+    border:1px solid rgba(148,163,184,.45);
+    justify-content:center;
+    color:#f9fafb;
+    font-size:14px;
+  }
+  .answers button.correct{
+    outline:2px solid var(--positive);
+    background:rgba(34,197,94,.1);
+  }
+  .answers button.wrong{
+    outline:2px solid var(--danger);
+    background:rgba(239,68,68,.08);
+  }
+
+  .meta{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:8px;
+    color:var(--muted);
+    font-size:14px;
+    margin-top:8px;
+  }
+  .tag{
+    padding:4px 10px;
+    border-radius:999px;
+    border:1px solid rgba(148,163,184,.7);
+    background:rgba(15,23,42,.9);
+  }
+
+  .tiles{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    justify-content:center;
+    margin-top:10px;
+  }
+    .tile{
+    min-width:50px;
+    padding:12px 16px;
+    border-radius:12px;
+    background:radial-gradient(circle at 30% 20%, rgba(255,255,255,0.09), transparent 55%),
+               #020817;
+    border:1px solid rgba(148,163,184,.9);
+    font-weight:800;
+    letter-spacing:1.2px;
+    font-size:20px;              /* КРУПНЕЕ БУКВЫ */
+    color:#f9fafb;               /* ЯРКО-БЕЛЫЙ ТЕКСТ */
+    cursor:pointer;
+    box-shadow:0 6px 18px rgba(15,23,42,.9);
+    text-shadow:0 0 4px rgba(0,0,0,.8); /* ЛЁГКАЯ ПОДСВЕТКА ВОКРУГ БУКВЫ */
+    transition:transform .08s,box-shadow .08s,background .15s,opacity .15s;
+  }
+
+  .tile.used{
+    opacity:.45;
+    box-shadow:none;
+    background:#020617;
+    border-color:rgba(148,163,184,.6);
+  }
+
+  .tile:active{
+    transform:scale(.95);
+    box-shadow:0 4px 12px rgba(15,23,42,.9);
+  }
+  .code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.6px}
+
+  canvas{
+    max-width:100%;
+    height:auto;
+    border-radius:18px;
+    border:1px solid rgba(148,163,184,.5);
+    background:#020617;
+    box-shadow:0 18px 40px rgba(15,23,42,1);
+  }
+
   .cta{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
   .muted{color:var(--muted)}
-  .note{background:#0b1020;border:1px dashed rgba(255,255,255,.18);padding:10px;border-radius:10px}
-  .scorebar{height:10px;background:#0b1020;border-radius:99px;overflow:hidden;border:1px solid rgba(255,255,255,.12)}
-  .scorebar>div{height:100%;background:linear-gradient(90deg,var(--accent1),var(--accent3))}
+  .note{
+    background:#020617;
+    border:1px dashed rgba(148,163,184,.7);
+    padding:10px;
+    border-radius:12px;
+  }
+
+  .scorebar{
+    height:10px;
+    background:#020617;
+    border-radius:999px;
+    overflow:hidden;
+    border:1px solid rgba(148,163,184,.5);
+  }
+  .scorebar>div{
+    height:100%;
+    background:linear-gradient(90deg,var(--accent2),var(--accent1),var(--accent3));
+    width:0%;
+    transition:width .4s ease-out;
+  }
 </style>
 </head>
 <body>
@@ -55,6 +247,7 @@
     <div>
       <h1>Квест «Разные — но вместе»</h1>
       <div class="sub">Онлайн-игра к Дню народного единства от ВТСТ.LIVE</div>
+      <div id="slogan"></div>
     </div>
   </header>
 
@@ -62,16 +255,22 @@
     <!-- START -->
     <section id="screen-start" class="active">
       <div class="panel grid" style="gap:14px">
-        <div class="meta"><span>⏱ Таймер</span><span class="tag"><b>3:00</b> на все задания</span></div>
+        <div class="meta">
+          <span>⏱ Формат</span>
+          <span class="tag"><b>3 минуты</b>, 3 задания, 100 очков максимум</span>
+        </div>
         <label>Твоё имя (для бейджа):</label>
         <input id="playerName" type="text" placeholder="Например: Алина И24.3к">
         <div class="cta">
-          <button id="btnStart">Старт</button>
+          <button id="btnStart">Старт квеста 🚀</button>
           <button class="ghost" id="btnHow">Как играть?</button>
         </div>
         <div id="howto" class="muted" style="display:none">
-          3 мини-игры: викторина → сортировка шагов → собери слово «ЕДИНСТВО». Набирай баллы, успей до конца таймера.
-          В финале — персональный бейдж и вклад в общую копилку.
+          <b>Что будет?</b><br>
+          ▸ Викторина про культуру единства и жизнь ВТСТ<br>
+          ▸ Ситуации в группе: выбираешь лучшее действие<br>
+          ▸ Сборка слова «ЕДИНСТВО» — каждая буква раскрывает ценность.<br><br>
+          На финише — персональный бейдж и вклад в общую «копилку единства».
         </div>
       </div>
     </section>
@@ -80,25 +279,26 @@
     <section id="screen-quiz">
       <div class="panel">
         <div class="meta">
-          <div>Задание 1/3 — Викторина «ВТСТ & культура единства»</div>
+          <div>Задание 1/3 — Викторина «ВТСТ & единство»</div>
           <div>⏳ Осталось: <b id="timeLeft">03:00</b> | Очки: <b id="scoreA">0</b></div>
         </div>
+        <p class="muted" id="tipQuiz"></p>
         <div id="quizWrap" class="grid" style="gap:12px"></div>
-        <div class="cta"><button id="toSort" disabled>Далее → Сортировка</button></div>
+        <div class="cta"><button id="toSort" disabled>Далее → Ситуации в группе</button></div>
       </div>
     </section>
 
-    <!-- SORT -->
+    <!-- CASES -->
     <section id="screen-sort">
       <div class="panel">
         <div class="meta">
-          <div>Задание 2/3 — Сортировка «Подготовка события ВТСТ.LIVE»</div>
+          <div>Задание 2/3 — Ситуации в группе</div>
           <div>⏳ Осталось: <b id="timeLeft2">03:00</b> | Очки: <b id="scoreB">0</b></div>
         </div>
-        <p class="muted">Поставь шаги в правильный порядок (тащи карточки):</p>
-        <ul id="sortList" class="sortable"></ul>
+        <p class="muted">Выбери вариант действия, который больше всего поддерживает единство в группе.</p>
+        <div id="casesWrap" class="grid" style="gap:12px"></div>
+        <p class="muted" id="tipSort" style="margin-top:4px"></p>
         <div class="cta">
-          <button id="checkSort">Проверить</button>
           <button id="toTiles" class="ghost" disabled>Далее → Собери слово</button>
         </div>
       </div>
@@ -111,12 +311,13 @@
           <div>Задание 3/3 — Собери слово «ЕДИНСТВО»</div>
           <div>⏳ Осталось: <b id="timeLeft3">03:00</b> | Очки: <b id="scoreC">0</b></div>
         </div>
-        <p class="muted">Коснись букв по порядку. Каждая буква — короткая ценность ВТСТ.</p>
+        <p class="muted">Коснись букв по порядку. Каждый символ — ценность ВТСТ.</p>
         <div id="tiles" class="tiles"></div>
         <div style="margin-top:8px" class="code" id="progressWord"></div>
         <div class="note muted" id="hintBox" style="display:none"></div>
+        <p class="muted" id="tipTiles" style="margin-top:6px"></p>
         <div class="cta">
-          <button id="finish" disabled>Финиш и бейдж</button>
+          <button id="finish" disabled>Финиш и бейдж 🎓</button>
         </div>
       </div>
     </section>
@@ -128,10 +329,13 @@
           <div>Готово! Твой бейдж</div>
           <div>Итог: <b id="finalScore">0</b> очков</div>
         </div>
+        <p class="muted" id="finalMessage" style="margin-top:6px"></p>
         <canvas id="badge" width="900" height="1200" aria-label="Бейдж"></canvas>
         <div class="cta">
           <button id="downloadBadge">Скачать PNG</button>
-          <button id="copyShare" class="ghost">Скопировать текст для сторис</button>
+          <button id="copyShare" class="ghost">Текст для сторис</button>
+          <!-- Скрытая админ-кнопка: появится по двойному клику на логотип -->
+          <button id="exportCSV" class="ghost" style="display:none">Скачать журнал (CSV)</button>
         </div>
 
         <div class="panel" style="margin-top:16px">
@@ -141,31 +345,23 @@
           </div>
           <div class="row">
             <div style="min-width:220px">Общий счёт: <b id="poolTotal">0</b></div>
-            <div class="scorebar" style="flex:1 1 240px"><div id="poolBar" style="width:0%"></div></div>
+            <div class="scorebar" style="flex:1 1 240px"><div id="poolBar"></div></div>
           </div>
-          <p class="muted" style="margin:8px 0 0">* Можно подключить глобальный табло через Google Sheets — см. CONFIG в скрипте.</p>
+          <p class="muted" style="margin:8px 0 0">
+            * Журнал результатов хранится в этом браузере. Очистка истории/кэша удалит данные.
+          </p>
         </div>
-
-        <p class="muted" style="margin-top:12px">Хочешь общий табло? <a href="#" id="formLink">Отправить результат</a> (опционально).</p>
       </div>
     </section>
   </main>
 </div>
 
 <script>
-/* =================== CONFIG (при желании поменяйте) =================== */
 const CONFIG = {
   brand: 'ВТСТ.LIVE',
-  gradientA: '#22d3ee',
-  gradientB: '#8b5cf6',
-  // Опциональный общий табло: укажите опубликованный CSV Google Sheets (с колонкой score)
-  SHEET_CSV_URL: '', // напр.: 'https://docs.google.com/spreadsheets/d/e/....../pub?gid=0&single=true&output=csv'
-  // Опциональная предзаполненная Google Form:
-  FORM_ID: 'YOUR_GOOGLE_FORM_ID',
-  ENTRY_NAME: 'entry.111111111',   // замените на свой
-  ENTRY_SCORE: 'entry.222222222'   // замените на свой
+  gradientA: '#2563eb',
+  gradientB: '#0ea5e9'
 };
-/* ===================================================================== */
 
 const $ = s=>document.querySelector(s);
 const screens = ['#screen-start','#screen-quiz','#screen-sort','#screen-tiles','#screen-result'];
@@ -173,67 +369,205 @@ const screens = ['#screen-start','#screen-quiz','#screen-sort','#screen-tiles','
 let nameUser='', score=0, tLeft=180, timerId=null;
 const SCORE = {quiz:0, sort:0, tiles:0};
 const LOCAL_POOL_KEY = 'vtst_unity_total';
+const RESULTS_KEY = 'vtst_unity_results';
 
-/* ---------- Контент под ВТСТ ---------- */
-// Викторина (да/нет) — без «скользких» дат, всё про культуру единства и кампус
-const QUESTIONS = [
-  {q:'Помочь первокурснику с навигацией в УК№2 — это про единство?', correct:true},
-  {q:'Сорвать чужую афишу мероприятия — это про единство?', correct:false},
-  {q:'Поделиться инструментом и напомнить ТБ в мастерской — это про единство?', correct:true},
-  {q:'Игнорировать просьбу одногруппника о помощи — это про единство?', correct:false},
-  {q:'Общий проект медиацентра объединяет ребят разных курсов?', correct:true},
-  {q:'Опоздать на съёмку без предупреждения — это про единство?', correct:false},
-  {q:'Рассказывать новичкам, где что находится — это про единство?', correct:true},
-  {q:'Портить общее оборудование — это про единство?', correct:false},
+const SLOGANS = [
+  'Разные специальности — одна команда ВТСТ.',
+  'Единство начинается с маленьких дел каждый день.',
+  'Медиа, учеба, спорт — всё работает, когда мы вместе.',
+  'Первокурсники, выпускники, педагоги — один техникум.',
+  'Когда помогаешь другому — усиливаешь всю группу.'
 ];
 
-// Правильный порядок: подготовка события ВТСТ.LIVE
-const ORDER_CORRECT = [
-  'Собираем команду и распределяем роли',
-  'Согласовываем сценарий, площадку и сроки',
-  'Готовим репетиции и материалы',
-  'Проверяем звук/свет и безопасность',
-  'Проводим событие и благодарим команду, публикуем отчёт'
-];
-
-// Слово и подсказки по буквам
-const WORD = 'ЕДИНСТВО';
-const LETTER_HINTS = {
-  'Е':'Единые цели',
-  'Д':'Доверие',
-  'И':'Инициатива',
-  'Н':'Наставничество',
-  'С':'Сотрудничество',
-  'Т':'Трудолюбие',
-  'В':'Вовлечённость',
-  'О':'Ответственность'
+const TIPS = {
+  quiz: [
+    'Лайфхак: отвечай так, как если бы речь шла о твоей группе прямо сейчас.',
+    'Думай о том, что помогает, а что разрушает атмосферу в аудитории.',
+    'Представь, что ты куратор: какие действия ты бы поощрил?',
+    'Единство — это не «мои люди и чужие», а общий техникум и общие цели.'
+  ],
+  sort: [
+    'Представь, что речь идёт о вашей группе на реальной паре.',
+    'Думай, как бы поступил куратор, чтобы сохранить команду.',
+    'Иногда правильное действие — не самое удобное, но честное.',
+    'Главный критерий: всем ли от этого станет проще работать вместе?'
+  ],
+  tiles: [
+    'Подсказка: буквы можно читать как «словарь единства» ВТСТ.',
+    'Е — единые цели, Д — доверие, И — инициатива… Остальное увидишь сам.',
+    'Попробуй угадывать подсказки к букве ещё до появления подсказки.',
+    'Слово «ЕДИНСТВО» здесь не случайно — это наш главный смысл.'
+  ]
 };
 
-/* ---------- Утилиты ---------- */
+const QUESTIONS = [
+  {q:'Помочь первокурснику с навигацией в УЛК№2 — это про единство?', correct:true},
+  {q:'Сорвать чужую афишу мероприятия в техникуме — это про единство?', correct:false},
+  {q:'Поделиться инструментом и напомнить правила ТБ в мастерской — это про единство?', correct:true},
+  {q:'Игнорировать просьбу одногруппника о помощи с заданием — это про единство?', correct:false},
+  {q:'Сделать общий проект вместе с другой группой — это про единство?', correct:true},
+  {q:'Опоздать на репетицию мероприятия и никого не предупредить — это про единство?', correct:false},
+  {q:'Рассказывать новичкам, где какие кабинеты и корпуса — это про единство?', correct:true},
+  {q:'Портить общее оборудование в аудитории ради «прикола» — это про единство?', correct:false},
+  {q:'Участвовать в уборке аудитории после мероприятия — это про единство?', correct:true},
+  {q:'Обсуждать одногруппника за спиной вместо честного диалога — это про единство?', correct:false},
+  {q:'Прийти поддержать группу на конкурсе или матче — это про единство?', correct:true},
+  {q:'Выставить общий проект только на своё имя и не отметить команду — это про единство?', correct:false},
+  {q:'Поделиться конспектами и подсказками к зачёту — это про единство?', correct:true},
+  {q:'Специально мешать другой группе, чтобы «выиграть конкуренцию» — это про единство?', correct:false},
+  {q:'Помочь одногруппнику настроить презентацию перед выступлением — это про единство?', correct:true},
+  {q:'Вывести конфликт в публичный скандал в соцсетях про техникум — это про единство?', correct:false},
+  {q:'Поздравить ребят из другого отделения с победой — это про единство?', correct:true},
+  {q:'Оставить мусор в аудитории и выключить свет «пусть другие убирают» — это про единство?', correct:false},
+  {q:'Поучаствовать в опросе техникума, чтобы улучшить условия обучения — это про единство?', correct:true},
+  {q:'Игнорировать правила безопасности ради «эффектного кадра» в соцсетях — это про единство?', correct:false},
+  {q:'Поддержать идею первокурсника и помочь оформить её — это про единство?', correct:true},
+  {q:'В последний момент отменить своё участие в важном командном деле без причины — это про единство?', correct:false}
+];
+
+const CASES = [
+  {
+    text:'Перед общим зачётом одногруппник не понимает тему и стесняется спросить преподавателя.',
+    options:[
+      'Сказать, что у каждого свои проблемы и уйти',
+      'Дать ссылку на учебник без объяснений',
+      'Найти 10–15 минут и объяснить основные моменты'
+    ],
+    correct:2
+  },
+  {
+    text:'Вы готовите групповой проект, один участник сильно отстаёт по срокам.',
+    options:[
+      'Удалить его фамилию с проекта и молча сдать работу',
+      'Собраться мини-командой, разобрать, где помочь, и перераспределить задачи',
+      'Сделать всё за него, но потом постоянно напоминать об этом'
+    ],
+    correct:1
+  },
+  {
+    text:'Первокурсник потерялся в корпусе перед парой и явно нервничает.',
+    options:[
+      'Снять сторис о том, как «новички опять заблудились»',
+      'Показать нужный кабинет и коротко рассказать, как ориентироваться',
+      'Сказать «посмотри расписание ещё раз» и пройти мимо'
+    ],
+    correct:1
+  },
+  {
+    text:'Во время подготовки к мероприятию часть группы спорит из-за мелочей и работа встаёт.',
+    options:[
+      'Оставить их ругаться и заняться только своей задачей',
+      'Попытаться сформулировать общую цель и предложить разделить спорные решения на голосование',
+      'Сделать фото «скандала» и выложить в личные соцсети'
+    ],
+    correct:1
+  },
+  {
+    text:'Одногруппник часто опаздывает, из-за чего страдает общий проект.',
+    options:[
+      'Ничего не говорить, а потом устроить скандал при преподавателе',
+      'Спокойно обсудить, в чём причина опозданий, и вместе найти решение',
+      'Просто перестать давать ему задачи, не объясняя причин'
+    ],
+    correct:1
+  },
+  {
+    text:'В группе появились слухи про одного студента, и тебя просят «поделиться подробностями».',
+    options:[
+      'Добавить пару «фактов», чтобы казаться в теме',
+      'Сказать, что обсуждать чужую личную жизнь — не вариант',
+      'Сделать вид, что ничего не слышал, но внимательно слушать'
+    ],
+    correct:1
+  },
+  {
+    text:'Ребята из другой специальности приглашают вас поучаствовать в совместном проекте.',
+    options:[
+      'Отказаться, потому что «нам своих дел хватает»',
+      'Согласиться и сразу взять на себя все ключевые роли',
+      'Обсудить формат и распределить задачи так, чтобы всем было полезно'
+    ],
+    correct:2
+  },
+  {
+    text:'После мероприятия в аудитории беспорядок.',
+    options:[
+      'Сказать «за нами уберут» и уйти',
+      'Собраться втроём-четвером и быстро привести аудиторию в порядок',
+      'Сделать сторис с мусором и отметить техникум'
+    ],
+    correct:1
+  }
+];
+
+const WORD = 'ЕДИНСТВО';
+const LETTER_HINTS = {
+  'Е':'Единые цели — понимаем, зачем всё делаем',
+  'Д':'Доверие — можно рассчитывать друг на друга',
+  'И':'Инициатива — идеи рождаются не только у старших',
+  'Н':'Наставничество — старшие помогают младшим',
+  'С':'Сотрудничество — объединяем специальности и курсы',
+  'Т':'Трудолюбие — делаем не «для галочки», а на результат',
+  'В':'Вовлечённость — участвуем, а не просто наблюдаем',
+  'О':'Ответственность — отвечаем за свои решения и слова'
+};
+
 function goto(id){ screens.forEach(s=>$(s).classList.toggle('active', s===id)); }
 function shuffle(a){ for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; }
+function rand(arr){return arr[Math.floor(Math.random()*arr.length)];}
+
 function startTimer(){
   clearInterval(timerId);
   timerId=setInterval(()=>{
-    tLeft--; if(tLeft<0){ clearInterval(timerId); finishGame(); return; }
+    tLeft--;
+    if(tLeft<0){
+      clearInterval(timerId);
+      finishGame();
+      return;
+    }
     const mm=String(Math.floor(tLeft/60)).padStart(2,'0');
     const ss=String(tLeft%60).padStart(2,'0');
-    ['#timeLeft','#timeLeft2','#timeLeft3'].forEach(id=>{ const el=$(id); if(el) el.textContent=`${mm}:${ss}`; });
+    ['#timeLeft','#timeLeft2','#timeLeft3'].forEach(id=>{
+      const el=$(id); if(el) el.textContent=`${mm}:${ss}`;
+    });
   },1000);
 }
 
-/* ---------- Старт ---------- */
-$('#btnHow').onclick=()=>$('#howto').style.display=$('#howto').style.display==='none'?'block':'none';
+/* DOMContentLoaded: слоган, скрытая кнопка, хендлер CSV */
+window.addEventListener('DOMContentLoaded',()=>{
+  $('#slogan').textContent = rand(SLOGANS);
+
+  const exportBtn = $('#exportCSV');
+  if(exportBtn) exportBtn.onclick = exportResultsCSV;
+
+  const logo = document.querySelector('.logo');
+  if(logo && exportBtn){
+    // Двойной клик по логотипу — показать/спрятать кнопку экспорта
+    logo.addEventListener('dblclick', ()=>{
+      exportBtn.style.display = exportBtn.style.display === 'none' ? 'inline-flex' : 'none';
+    });
+  }
+});
+
+$('#btnHow').onclick=()=>{
+  const h=$('#howto');
+  h.style.display = h.style.display==='none'?'block':'none';
+};
+
 $('#btnStart').onclick=()=>{
   nameUser = $('#playerName').value.trim() || 'Участник ВТСТ';
   score=0; tLeft=180; SCORE.quiz=SCORE.sort=SCORE.tiles=0;
-  buildQuiz(); updateScoreViews();
-  goto('#screen-quiz'); startTimer();
+  buildQuiz();
+  updateScoreViews();
+  goto('#screen-quiz');
+  startTimer();
 };
 
-/* ---------- Викторина ---------- */
+/* Викторина */
 function buildQuiz(){
   const wrap = $('#quizWrap'); wrap.innerHTML='';
+  $('#tipQuiz').textContent = rand(TIPS.quiz);
+
   const pick = shuffle([...QUESTIONS]).slice(0,5);
   pick.forEach((item,i)=>{
     const box=document.createElement('div'); box.className='qbox';
@@ -249,7 +583,8 @@ function buildQuiz(){
         const val = (b.dataset.v==='true');
         if(val===item.correct){ b.classList.add('correct'); SCORE.quiz+=10; score+=10; }
         else { b.classList.add('wrong'); }
-        box.dataset.done=1; updateScoreViews();
+        box.dataset.done='1';
+        updateScoreViews();
         const allDone = [...$('#quizWrap').children].every(c=>c.dataset.done);
         $('#toSort').disabled=!allDone;
       };
@@ -259,55 +594,73 @@ function buildQuiz(){
 }
 $('#toSort').onclick=()=>{ buildSort(); goto('#screen-sort'); };
 
-/* ---------- Сортировка ---------- */
+/* Задание 2 — кейсы */
 function buildSort(){
-  const list = $('#sortList'); list.innerHTML='';
-  const items = shuffle([...ORDER_CORRECT]);
-  items.forEach(txt=>{
-    const li=document.createElement('li');
-    li.textContent=txt; li.draggable=true;
-    li.addEventListener('dragstart',e=>{ e.dataTransfer.setData('text/plain', txt); e.dataTransfer.dropEffect='move'; li.classList.add('dragging');});
-    li.addEventListener('dragend',()=>li.classList.remove('dragging'));
-    list.appendChild(li);
-  });
-  list.addEventListener('dragover',e=>{
-    e.preventDefault();
-    const dragging = list.querySelector('.dragging');
-    const siblings = [...list.querySelectorAll('li:not(.dragging)')];
-    const after = siblings.find(el=>{
-      const rect = el.getBoundingClientRect();
-      return e.clientY < rect.top + rect.height/2;
+  const wrap = $('#casesWrap'); wrap.innerHTML='';
+  $('#tipSort').textContent = rand(TIPS.sort);
+
+  const pick = shuffle([...CASES]).slice(0,4);
+  pick.forEach((item, idx)=>{
+    const box = document.createElement('div');
+    box.className='qbox';
+    box.innerHTML = `<div><b>Ситуация ${idx+1}:</b> ${item.text}</div>`;
+    const ansDiv = document.createElement('div');
+    ansDiv.className='answers';
+
+    item.options.forEach((opt, iOpt)=>{
+      const btn = document.createElement('button');
+      btn.textContent = opt;
+      btn.onclick = ()=>{
+        if(box.dataset.done) return;
+        box.dataset.done='1';
+        if(iOpt===item.correct){
+          btn.classList.add('correct');
+          SCORE.sort += 5;
+          score += 5;
+        } else {
+          btn.classList.add('wrong');
+          const btns = ansDiv.querySelectorAll('button');
+          if(btns[item.correct]) btns[item.correct].classList.add('correct');
+        }
+        updateScoreViews();
+        const allDone = [...wrap.children].every(c=>c.dataset.done);
+        $('#toTiles').disabled=!allDone;
+      };
+      ansDiv.appendChild(btn);
     });
-    if(!after) list.appendChild(dragging); else list.insertBefore(dragging, after);
+
+    box.appendChild(ansDiv);
+    wrap.appendChild(box);
   });
 }
-$('#checkSort').onclick=()=>{
-  const current = [...$('#sortList').children].map(li=>li.textContent);
-  let correct=0; current.forEach((txt,i)=>{ if(txt===ORDER_CORRECT[i]) correct++; });
-  const pts = Math.round((correct/ORDER_CORRECT.length)*20); // до 20 очков
-  if(pts > SCORE.sort){ score += (pts - SCORE.sort); SCORE.sort = pts; } // улучшение засчитываем
-  updateScoreViews(); $('#toTiles').disabled=false;
-};
 $('#toTiles').onclick=()=>{ buildTiles(); goto('#screen-tiles'); };
 
-/* ---------- Слово ---------- */
+/* Слово ЕДИНСТВО */
 let chosen=[];
 function buildTiles(){
   chosen=[]; $('#progressWord').textContent=''; $('#finish').disabled=true;
+  $('#hintBox').style.display='none'; $('#hintBox').textContent='';
+  $('#tipTiles').textContent = rand(TIPS.tiles);
+
   const cont = $('#tiles'); cont.innerHTML='';
   const letters = shuffle([...WORD.split('')]);
   letters.forEach(ch=>{
-    const b=document.createElement('button'); b.className='tile'; b.textContent=ch; b.title=LETTER_HINTS[ch]||'';
+    const b=document.createElement('button'); b.className='tile'; b.textContent=ch;
     b.onclick=()=>{
       if(b.classList.contains('used')) return;
       b.classList.add('used');
       if(LETTER_HINTS[ch]){
-        const hb=$('#hintBox'); hb.style.display='block'; hb.textContent=`${ch} — ${LETTER_HINTS[ch]}`;
+        const hb=$('#hintBox');
+        hb.style.display='block';
+        hb.textContent=`${ch} — ${LETTER_HINTS[ch]}`;
       }
-      chosen.push(ch); $('#progressWord').textContent=chosen.join('');
+      chosen.push(ch);
+      $('#progressWord').textContent=chosen.join('');
       if(chosen.join('')===WORD){
         const pts = 30;
-        if(SCORE.tiles===0){ score+=pts; SCORE.tiles=pts; updateScoreViews(); }
+        if(SCORE.tiles===0){
+          score+=pts; SCORE.tiles=pts; updateScoreViews();
+        }
         $('#finish').disabled=false;
       }
     };
@@ -315,139 +668,205 @@ function buildTiles(){
   });
 }
 
-/* ---------- Финиш ---------- */
+/* Финиш */
 $('#finish').onclick=finishGame;
+
 function updateScoreViews(){
   $('#scoreA').textContent=SCORE.quiz;
   $('#scoreB').textContent=SCORE.sort;
   $('#scoreC').textContent=SCORE.tiles;
 }
+
 function finishGame(){
   clearInterval(timerId);
   goto('#screen-result');
   $('#finalScore').textContent=score;
+
+  let msg;
+  if(score>=80){
+    msg = 'Ты — мотор команды ВТСТ: высокий уровень командного мышления и ответственности.';
+  } else if(score>=55){
+    msg = 'Отличный результат! На тебя можно опереться в общем деле.';
+  } else if(score>=30){
+    msg = 'Хороший старт. Чем больше практики в событиях техникума — тем сильнее будет чувство команды.';
+  } else {
+    msg = 'Каждый проходит путь к единству с малого. Главное — делать первые шаги в реальной жизни техникума.';
+  }
+  $('#finalMessage').textContent = msg;
+
   drawBadge();
   updatePools();
-
-  // Предзаполненная форма (если указана)
-  if(CONFIG.FORM_ID && CONFIG.ENTRY_NAME && CONFIG.ENTRY_SCORE){
-    $('#formLink').href = `https://docs.google.com/forms/d/e/${CONFIG.FORM_ID}/viewform?usp=pp_url&${CONFIG.ENTRY_NAME}=${encodeURIComponent(nameUser)}&${CONFIG.ENTRY_SCORE}=${score}`;
-  } else {
-    $('#formLink').style.display='none';
-  }
+  saveLocalResult();
 }
 
-/* ---------- Бейдж ---------- */
+/* Бейдж */
 function drawBadge(){
   const c=$('#badge'), g=c.getContext('2d');
-  // фон
+
   const grd = g.createLinearGradient(0,0,c.width,c.height);
-  grd.addColorStop(0,'#101a34'); grd.addColorStop(.5,'#1b2a55'); grd.addColorStop(1,'#0b1020');
+  grd.addColorStop(0,'#020617');
+  grd.addColorStop(.4,'#0b1430');
+  grd.addColorStop(1,'#020617');
   g.fillStyle=grd; g.fillRect(0,0,c.width,c.height);
 
-  // верхняя плашка
   const grd2 = g.createLinearGradient(0,0,c.width,0);
-  grd2.addColorStop(0,CONFIG.gradientA); grd2.addColorStop(1,CONFIG.gradientB);
-  g.fillStyle=grd2; g.fillRect(0,0,c.width,18);
+  grd2.addColorStop(0,CONFIG.gradientA);
+  grd2.addColorStop(1,CONFIG.gradientB);
+  g.fillStyle=grd2; g.fillRect(0,0,c.width,24);
 
-  // заголовок
   g.fillStyle='#fff';
-  g.font='bold 48px system-ui'; g.fillText(CONFIG.brand, 40, 90);
-  g.font='24px system-ui'; g.fillStyle='rgba(255,255,255,.85)'; g.fillText('Онлайн-квест «Разные — но вместе»', 40, 125);
+  g.font='bold 52px system-ui';
+  g.fillText(CONFIG.brand, 40, 100);
+  g.font='24px system-ui';
+  g.fillStyle='rgba(248,250,252,.9)';
+  g.fillText('Онлайн-квест «Разные — но вместе»', 40, 138);
 
-  // имя и очки
-  g.fillStyle='#fff'; g.font='28px system-ui';
-  g.fillText('Участник:', 40, 200);
-  g.font='bold 44px system-ui'; g.fillStyle='#dbeafe';
-  fitText(g, nameUser, 40, 250, 820, 'bold 44px system-ui');
+  g.fillStyle='#e5e7eb';
+  g.font='28px system-ui';
+  g.fillText('Участник:', 40, 210);
+  g.font='bold 44px system-ui';
+  g.fillStyle='#bfdbfe';
+  fitText(g, nameUser, 40, 260, 820, 'bold 44px system-ui');
 
-  g.fillStyle='#fff'; g.font='28px system-ui';
-  g.fillText('Итоговый результат:', 40, 330);
-  g.font='bold 64px system-ui'; g.fillStyle='#a5b4fc';
-  g.fillText(`${score} очков`, 40, 400);
+  g.fillStyle='#e5e7eb';
+  g.font='28px system-ui';
+  g.fillText('Итоговый результат:', 40, 340);
+  g.font='bold 64px system-ui';
+  g.fillStyle='#a5b4fc';
+  g.fillText(`${score} очков`, 40, 408);
 
-  // ценности (лента)
-  const values = ['Единые цели','Доверие','Инициатива','Наставничество','Сотрудничество','Трудолюбие','Вовлечённость','Ответственность'];
-  g.font='22px system-ui'; g.fillStyle='rgba(255,255,255,.9)';
+  const values = [
+    'Единые цели','Доверие','Инициатива','Наставничество',
+    'Сотрудничество','Трудолюбие','Вовлечённость','Ответственность'
+  ];
+  g.font='22px system-ui';
+  g.fillStyle='rgba(241,245,249,.95)';
   let x=40,y=480;
   values.forEach(v=>{
-    const w=g.measureText(v).width+26;
-    if(x+w>c.width-40){ x=40; y+=46; }
-    roundRect(g,x,y,w,36,'rgba(255,255,255,.08)'); 
-    g.fillText(v, x+13, y+24);
-    x+=w+10;
+    const w=g.measureText(v).width+30;
+    if(x+w>c.width-40){ x=40; y+=48; }
+    pill(g,x,y,w,38,'rgba(15,23,42,.9)','rgba(148,163,184,.8)');
+    g.fillText(v, x+15, y+26);
+    x+=w+12;
   });
 
-  // рамка
-  g.strokeStyle='rgba(255,255,255,.15)'; g.lineWidth=2; g.strokeRect(20,20,c.width-40,c.height-40);
+  g.strokeStyle='rgba(148,163,184,.7)';
+  g.lineWidth=2;
+  g.strokeRect(20,20,c.width-40,c.height-40);
 
-  // подписи
-  g.font='24px system-ui'; g.fillStyle='#86efac';
+  g.font='26px system-ui';
+  g.fillStyle='#4ade80';
   g.fillText('Я — часть команды ВТСТ', 40, c.height-90);
-  g.font='20px system-ui'; g.fillStyle='rgba(255,255,255,.7)';
-  g.fillText('Разные — но вместе • Отметь @ВТСТ.LIVE', 40, c.height-50);
+  g.font='20px system-ui';
+  g.fillStyle='rgba(226,232,240,.9)';
+  g.fillText('Разные — но вместе • @ВТСТ.LIVE', 40, c.height-50);
 
-  // кнопки
   $('#downloadBadge').onclick=()=>{
-    const a=document.createElement('a'); a.href=c.toDataURL('image/png'); a.download='VTSTLIVE_badge.png'; a.click();
+    const a=document.createElement('a');
+    a.href=c.toDataURL('image/png');
+    a.download='VTSTLIVE_badge.png';
+    a.click();
   };
   $('#copyShare').onclick=()=>{
-    const text = `Прошёл(ла) онлайн-квест ${CONFIG.brand} «Разные — но вместе» — ${score} очков! #ВТСТ #ВТСТLIVE #МыВместе`;
-    navigator.clipboard.writeText(text).then(()=>alert('Текст скопирован — вставляй в сторис/пост!'));
+    const text=`Прошёл(ла) онлайн-квест ${CONFIG.brand} «Разные — но вместе» — ${score} очков! #ВТСТ #ВТСТLIVE #МыВместе`;
+    navigator.clipboard.writeText(text).then(()=>alert('Текст скопирован — можно вставлять в сторис/пост.'));
   };
 }
-function roundRect(g,x,y,w,h,stroke){ g.fillStyle='transparent'; g.strokeStyle=stroke; g.lineWidth=1.5; g.beginPath(); g.moveTo(x+10,y); g.lineTo(x+w-10,y); g.quadraticCurveTo(x+w,y,x+w,y+10); g.lineTo(x+w,y+h-10); g.quadraticCurveTo(x+w,y+h,x+w-10,y+h); g.lineTo(x+10,y+h); g.quadraticCurveTo(x,y+h,x,y+h-10); g.lineTo(x,y+10); g.quadraticCurveTo(x,y,x+10,y); g.closePath(); g.stroke(); }
+
+function pill(g,x,y,w,h,bg,stroke){
+  g.fillStyle=bg;
+  g.strokeStyle=stroke;
+  g.lineWidth=1.6;
+  g.beginPath();
+  g.moveTo(x+ h/2, y);
+  g.lineTo(x+w-h/2,y);
+  g.quadraticCurveTo(x+w,y,x+w,y+h/2);
+  g.lineTo(x+w,y+h-h/2);
+  g.quadraticCurveTo(x+w,y+h,x+w-h/2,y+h);
+  g.lineTo(x+h/2,y+h);
+  g.quadraticCurveTo(x,y+h,x,y+h/2);
+  g.lineTo(x,y+h/2);
+  g.quadraticCurveTo(x,y,x+h/2,y);
+  g.closePath();
+  g.fill();
+  g.stroke();
+}
+
 function fitText(ctx, text, x, y, maxWidth, baseFont) {
   let size = parseInt(baseFont.match(/\d+/)[0],10);
   ctx.font=baseFont;
-  while(ctx.measureText(text).width>maxWidth && size>18){ size-=2; ctx.font=baseFont.replace(/\d+px/, size+'px'); }
+  while(ctx.measureText(text).width>maxWidth && size>18){
+    size-=2;
+    ctx.font=baseFont.replace(/\d+px/, size+'px');
+  }
   ctx.fillText(text, x, y);
 }
 
-/* ---------- Копилка (локальная/глобальная) ---------- */
+/* Копилка и журнал */
 async function updatePools(){
-  // Локальная (на устройстве)
   const prev = parseInt(localStorage.getItem(LOCAL_POOL_KEY)||'0',10);
   const localTotal = prev + score;
   localStorage.setItem(LOCAL_POOL_KEY, String(localTotal));
 
-  // По умолчанию показываем локальную
-  let label='Локальная (на этом устройстве)', total=localTotal;
-
-  // Глобальная через Google Sheets CSV, если указали URL
-  if(CONFIG.SHEET_CSV_URL){
-    try{
-      const resp = await fetch(CONFIG.SHEET_CSV_URL, {cache:'no-store'});
-      if(resp.ok){
-        const csv = await resp.text();
-        const sum = sumCSV(csv);
-        if(Number.isFinite(sum)){
-          label='Глобальная (по данным таблицы)';
-          total=sum;
-        }
-      }
-    }catch(e){ /* тихий фоллбэк на локальную */ }
-  }
+  const label='Локальная (на этом устройстве)';
+  const total=localTotal;
 
   $('#poolLabel').textContent=label;
   $('#poolTotal').textContent=total;
-  const pct = Math.max(5, Math.min(100, (total%1000)/10)); // простая визуализация прогресса
-  $('#poolBar').style.width = pct+'%';
+  const pct = Math.max(5, Math.min(100, (total%1000)/10));
+  $('#poolBar').style.width=pct+'%';
 }
-function sumCSV(csv){
-  const lines = csv.trim().split(/\r?\n/);
-  if(lines.length<2) return NaN;
-  const headers = lines[0].split(',').map(h=>h.trim().toLowerCase());
-  const idx = headers.findIndex(h=>h==='score' || h==='scores' || h==='очки');
-  if(idx<0) return NaN;
-  let s=0;
-  for(let i=1;i<lines.length;i++){
-    const cells = lines[i].split(',');
-    const v = parseFloat(cells[idx]);
-    if(Number.isFinite(v)) s+=v;
+
+function saveLocalResult(){
+  const raw = localStorage.getItem(RESULTS_KEY);
+  let arr;
+  try{ arr = raw ? JSON.parse(raw) : []; } catch(e){ arr = []; }
+  arr.push({
+    name: nameUser,
+    score: score,
+    ts: new Date().toISOString()
+  });
+  localStorage.setItem(RESULTS_KEY, JSON.stringify(arr));
+}
+
+function exportResultsCSV(){
+  const raw = localStorage.getItem(RESULTS_KEY);
+  if(!raw){
+    alert('Пока нет сохранённых результатов.');
+    return;
   }
-  return s;
+  let arr;
+  try{ arr = JSON.parse(raw); } catch(e){
+    alert('Не удалось прочитать журнал результатов.');
+    return;
+  }
+  if(!Array.isArray(arr) || !arr.length){
+    alert('Пока нет сохранённых результатов.');
+    return;
+  }
+
+  let csv = 'Имя;Очки;Дата/время\n';
+  arr.forEach(r=>{
+    const name = (r.name||'').replace(/"/g,'""');
+    const sc = r.score ?? '';
+    const dt = r.ts ? new Date(r.ts).toLocaleString('ru-RU') : '';
+    csv += `"${name}";"${sc}";"${dt}"\n`;
+  });
+
+  // >>> ВАЖНО: добавляем BOM, чтобы Excel понял UTF-8
+  const BOM = '\uFEFF';
+  const blob = new Blob([BOM + csv], { type:'text/csv;charset=utf-8;' });
+
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'vtstlive_kvest_rezultaty.csv';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
 }
+
 </script>
 </body>
 </html>
