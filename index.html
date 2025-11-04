@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>ВТСТ.LIVE — Квест «Разные — но вместе»</title>
+<style>
+  :root{
+    --bg:#0f172a; --panel:#0b1220; --card:#111827; --text:#e5e7eb; --muted:#94a3b8;
+    --accent1:#22d3ee; --accent2:#60a5fa; --accent3:#8b5cf6; --positive:#22c55e; --warn:#f59e0b; --danger:#ef4444;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:radial-gradient(80% 60% at 50% 0%,#101a34 0%,var(--bg) 60%); color:var(--text); font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+  .wrap{max-width:860px;margin:0 auto;padding:20px}
+  header{display:flex;align-items:center;gap:14px;padding:14px 0 6px}
+  .logo{width:42px;height:42px;border-radius:10px;background:linear-gradient(135deg,var(--accent1),var(--accent3));display:grid;place-items:center;box-shadow:0 6px 20px rgba(0,0,0,.25)}
+  .logo span{font-weight:800;letter-spacing:.5px}
+  h1{font-size:clamp(20px,4vw,28px);margin:4px 0 2px}
+  .sub{color:var(--muted);font-size:14px}
+  main{background:linear-gradient(180deg,rgba(255,255,255,.02),rgba(255,255,255,.01));border:1px solid rgba(255,255,255,.06);border-radius:16px;padding:16px;box-shadow:0 12px 32px rgba(0,0,0,.25)}
+  section{display:none}
+  section.active{display:block}
+  .panel{background:var(--card);border:1px solid rgba(255,255,255,.06);border-radius:14px;padding:16px;margin-top:12px}
+  .row{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+  input,button,select{font:inherit;color:inherit}
+  input[type="text"]{width:100%;padding:12px 14px;border-radius:10px;border:1px solid rgba(255,255,255,.15);background:#0b1020;color:var(--text)}
+  button{border:0;padding:12px 16px;border-radius:10px;background:linear-gradient(135deg,var(--accent2),var(--accent3));color:#0b1020;font-weight:700;cursor:pointer;box-shadow:0 8px 20px rgba(0,0,0,.25)}
+  button.ghost{background:transparent;border:1px solid rgba(255,255,255,.18);color:var(--text)}
+  .grid{display:grid;gap:12px}
+  .qbox{padding:14px;border-radius:12px;background:#0c1428;border:1px solid rgba(255,255,255,.07)}
+  .answers{display:grid;gap:10px;margin-top:10px}
+  .answers button{background:#16213a;border:1px solid rgba(255,255,255,.08)}
+  .answers button.correct{outline:2px solid var(--positive)}
+  .answers button.wrong{outline:2px solid var(--danger)}
+  .meta{display:flex;justify-content:space-between;align-items:center;gap:8px;color:var(--muted);font-size:14px;margin-top:8px}
+  .tag{padding:4px 8px;border-radius:999px;border:1px solid rgba(255,255,255,.18)}
+  .sortable{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+  .sortable li{padding:12px;border-radius:10px;background:#16213a;border:1px solid rgba(255,255,255,.08);cursor:grab}
+  .tiles{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:10px}
+  .tile{min-width:44px;padding:10px 14px;border-radius:10px;background:#16213a;border:1px solid rgba(255,255,255,.08);font-weight:800;letter-spacing:1px;cursor:pointer}
+  .tile.used{opacity:.45}
+  .code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.5px}
+  canvas{max-width:100%;height:auto;border-radius:14px;border:1px solid rgba(255,255,255,.08);background:#0b1020}
+  .cta{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+  .muted{color:var(--muted)}
+  .note{background:#0b1020;border:1px dashed rgba(255,255,255,.18);padding:10px;border-radius:10px}
+  .scorebar{height:10px;background:#0b1020;border-radius:99px;overflow:hidden;border:1px solid rgba(255,255,255,.12)}
+  .scorebar>div{height:100%;background:linear-gradient(90deg,var(--accent1),var(--accent3))}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="logo"><span>ВТСТ</span></div>
+    <div>
+      <h1>Квест «Разные — но вместе»</h1>
+      <div class="sub">Онлайн-игра к Дню народного единства от ВТСТ.LIVE</div>
+    </div>
+  </header>
+
+  <main>
+    <!-- START -->
+    <section id="screen-start" class="active">
+      <div class="panel grid" style="gap:14px">
+        <div class="meta"><span>⏱ Таймер</span><span class="tag"><b>3:00</b> на все задания</span></div>
+        <label>Твоё имя (для бейджа):</label>
+        <input id="playerName" type="text" placeholder="Например: Алина И24.3к">
+        <div class="cta">
+          <button id="btnStart">Старт</button>
+          <button class="ghost" id="btnHow">Как играть?</button>
+        </div>
+        <div id="howto" class="muted" style="display:none">
+          3 мини-игры: викторина → сортировка шагов → собери слово «ЕДИНСТВО». Набирай баллы, успей до конца таймера.
+          В финале — персональный бейдж и вклад в общую копилку.
+        </div>
+      </div>
+    </section>
+
+    <!-- QUIZ -->
+    <section id="screen-quiz">
+      <div class="panel">
+        <div class="meta">
+          <div>Задание 1/3 — Викторина «ВТСТ & культура единства»</div>
+          <div>⏳ Осталось: <b id="timeLeft">03:00</b> | Очки: <b id="scoreA">0</b></div>
+        </div>
+        <div id="quizWrap" class="grid" style="gap:12px"></div>
+        <div class="cta"><button id="toSort" disabled>Далее → Сортировка</button></div>
+      </div>
+    </section>
+
+    <!-- SORT -->
+    <section id="screen-sort">
+      <div class="panel">
+        <div class="meta">
+          <div>Задание 2/3 — Сортировка «Подготовка события ВТСТ.LIVE»</div>
+          <div>⏳ Осталось: <b id="timeLeft2">03:00</b> | Очки: <b id="scoreB">0</b></div>
+        </div>
+        <p class="muted">Поставь шаги в правильный порядок (тащи карточки):</p>
+        <ul id="sortList" class="sortable"></ul>
+        <div class="cta">
+          <button id="checkSort">Проверить</button>
+          <button id="toTiles" class="ghost" disabled>Далее → Собери слово</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- TILES -->
+    <section id="screen-tiles">
+      <div class="panel">
+        <div class="meta">
+          <div>Задание 3/3 — Собери слово «ЕДИНСТВО»</div>
+          <div>⏳ Осталось: <b id="timeLeft3">03:00</b> | Очки: <b id="scoreC">0</b></div>
+        </div>
+        <p class="muted">Коснись букв по порядку. Каждая буква — короткая ценность ВТСТ.</p>
+        <div id="tiles" class="tiles"></div>
+        <div style="margin-top:8px" class="code" id="progressWord"></div>
+        <div class="note muted" id="hintBox" style="display:none"></div>
+        <div class="cta">
+          <button id="finish" disabled>Финиш и бейдж</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- RESULT -->
+    <section id="screen-result">
+      <div class="panel">
+        <div class="meta">
+          <div>Готово! Твой бейдж</div>
+          <div>Итог: <b id="finalScore">0</b> очков</div>
+        </div>
+        <canvas id="badge" width="900" height="1200" aria-label="Бейдж"></canvas>
+        <div class="cta">
+          <button id="downloadBadge">Скачать PNG</button>
+          <button id="copyShare" class="ghost">Скопировать текст для сторис</button>
+        </div>
+
+        <div class="panel" style="margin-top:16px">
+          <div class="meta">
+            <div>Копилка единства</div>
+            <div class="muted"><span id="poolLabel">Локальная (на этом устройстве)</span></div>
+          </div>
+          <div class="row">
+            <div style="min-width:220px">Общий счёт: <b id="poolTotal">0</b></div>
+            <div class="scorebar" style="flex:1 1 240px"><div id="poolBar" style="width:0%"></div></div>
+          </div>
+          <p class="muted" style="margin:8px 0 0">* Можно подключить глобальный табло через Google Sheets — см. CONFIG в скрипте.</p>
+        </div>
+
+        <p class="muted" style="margin-top:12px">Хочешь общий табло? <a href="#" id="formLink">Отправить результат</a> (опционально).</p>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script>
+/* =================== CONFIG (при желании поменяйте) =================== */
+const CONFIG = {
+  brand: 'ВТСТ.LIVE',
+  gradientA: '#22d3ee',
+  gradientB: '#8b5cf6',
+  // Опциональный общий табло: укажите опубликованный CSV Google Sheets (с колонкой score)
+  SHEET_CSV_URL: '', // напр.: 'https://docs.google.com/spreadsheets/d/e/....../pub?gid=0&single=true&output=csv'
+  // Опциональная предзаполненная Google Form:
+  FORM_ID: 'YOUR_GOOGLE_FORM_ID',
+  ENTRY_NAME: 'entry.111111111',   // замените на свой
+  ENTRY_SCORE: 'entry.222222222'   // замените на свой
+};
+/* ===================================================================== */
+
+const $ = s=>document.querySelector(s);
+const screens = ['#screen-start','#screen-quiz','#screen-sort','#screen-tiles','#screen-result'];
+
+let nameUser='', score=0, tLeft=180, timerId=null;
+const SCORE = {quiz:0, sort:0, tiles:0};
+const LOCAL_POOL_KEY = 'vtst_unity_total';
+
+/* ---------- Контент под ВТСТ ---------- */
+// Викторина (да/нет) — без «скользких» дат, всё про культуру единства и кампус
+const QUESTIONS = [
+  {q:'Помочь первокурснику с навигацией в УК№2 — это про единство?', correct:true},
+  {q:'Сорвать чужую афишу мероприятия — это про единство?', correct:false},
+  {q:'Поделиться инструментом и напомнить ТБ в мастерской — это про единство?', correct:true},
+  {q:'Игнорировать просьбу одногруппника о помощи — это про единство?', correct:false},
+  {q:'Общий проект медиацентра объединяет ребят разных курсов?', correct:true},
+  {q:'Опоздать на съёмку без предупреждения — это про единство?', correct:false},
+  {q:'Рассказывать новичкам, где что находится — это про единство?', correct:true},
+  {q:'Портить общее оборудование — это про единство?', correct:false},
+];
+
+// Правильный порядок: подготовка события ВТСТ.LIVE
+const ORDER_CORRECT = [
+  'Собираем команду и распределяем роли',
+  'Согласовываем сценарий, площадку и сроки',
+  'Готовим репетиции и материалы',
+  'Проверяем звук/свет и безопасность',
+  'Проводим событие и благодарим команду, публикуем отчёт'
+];
+
+// Слово и подсказки по буквам
+const WORD = 'ЕДИНСТВО';
+const LETTER_HINTS = {
+  'Е':'Единые цели',
+  'Д':'Доверие',
+  'И':'Инициатива',
+  'Н':'Наставничество',
+  'С':'Сотрудничество',
+  'Т':'Трудолюбие',
+  'В':'Вовлечённость',
+  'О':'Ответственность'
+};
+
+/* ---------- Утилиты ---------- */
+function goto(id){ screens.forEach(s=>$(s).classList.toggle('active', s===id)); }
+function shuffle(a){ for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; }
+function startTimer(){
+  clearInterval(timerId);
+  timerId=setInterval(()=>{
+    tLeft--; if(tLeft<0){ clearInterval(timerId); finishGame(); return; }
+    const mm=String(Math.floor(tLeft/60)).padStart(2,'0');
+    const ss=String(tLeft%60).padStart(2,'0');
+    ['#timeLeft','#timeLeft2','#timeLeft3'].forEach(id=>{ const el=$(id); if(el) el.textContent=`${mm}:${ss}`; });
+  },1000);
+}
+
+/* ---------- Старт ---------- */
+$('#btnHow').onclick=()=>$('#howto').style.display=$('#howto').style.display==='none'?'block':'none';
+$('#btnStart').onclick=()=>{
+  nameUser = $('#playerName').value.trim() || 'Участник ВТСТ';
+  score=0; tLeft=180; SCORE.quiz=SCORE.sort=SCORE.tiles=0;
+  buildQuiz(); updateScoreViews();
+  goto('#screen-quiz'); startTimer();
+};
+
+/* ---------- Викторина ---------- */
+function buildQuiz(){
+  const wrap = $('#quizWrap'); wrap.innerHTML='';
+  const pick = shuffle([...QUESTIONS]).slice(0,5);
+  pick.forEach((item,i)=>{
+    const box=document.createElement('div'); box.className='qbox';
+    box.innerHTML=`<div><b>Вопрос ${i+1}:</b> ${item.q}</div>
+      <div class="answers">
+        <button data-v="true">Да</button>
+        <button data-v="false">Нет</button>
+      </div>`;
+    const btns = box.querySelectorAll('button');
+    btns.forEach(b=>{
+      b.onclick=()=>{
+        if(box.dataset.done) return;
+        const val = (b.dataset.v==='true');
+        if(val===item.correct){ b.classList.add('correct'); SCORE.quiz+=10; score+=10; }
+        else { b.classList.add('wrong'); }
+        box.dataset.done=1; updateScoreViews();
+        const allDone = [...$('#quizWrap').children].every(c=>c.dataset.done);
+        $('#toSort').disabled=!allDone;
+      };
+    });
+    wrap.appendChild(box);
+  });
+}
+$('#toSort').onclick=()=>{ buildSort(); goto('#screen-sort'); };
+
+/* ---------- Сортировка ---------- */
+function buildSort(){
+  const list = $('#sortList'); list.innerHTML='';
+  const items = shuffle([...ORDER_CORRECT]);
+  items.forEach(txt=>{
+    const li=document.createElement('li');
+    li.textContent=txt; li.draggable=true;
+    li.addEventListener('dragstart',e=>{ e.dataTransfer.setData('text/plain', txt); e.dataTransfer.dropEffect='move'; li.classList.add('dragging');});
+    li.addEventListener('dragend',()=>li.classList.remove('dragging'));
+    list.appendChild(li);
+  });
+  list.addEventListener('dragover',e=>{
+    e.preventDefault();
+    const dragging = list.querySelector('.dragging');
+    const siblings = [...list.querySelectorAll('li:not(.dragging)')];
+    const after = siblings.find(el=>{
+      const rect = el.getBoundingClientRect();
+      return e.clientY < rect.top + rect.height/2;
+    });
+    if(!after) list.appendChild(dragging); else list.insertBefore(dragging, after);
+  });
+}
+$('#checkSort').onclick=()=>{
+  const current = [...$('#sortList').children].map(li=>li.textContent);
+  let correct=0; current.forEach((txt,i)=>{ if(txt===ORDER_CORRECT[i]) correct++; });
+  const pts = Math.round((correct/ORDER_CORRECT.length)*20); // до 20 очков
+  if(pts > SCORE.sort){ score += (pts - SCORE.sort); SCORE.sort = pts; } // улучшение засчитываем
+  updateScoreViews(); $('#toTiles').disabled=false;
+};
+$('#toTiles').onclick=()=>{ buildTiles(); goto('#screen-tiles'); };
+
+/* ---------- Слово ---------- */
+let chosen=[];
+function buildTiles(){
+  chosen=[]; $('#progressWord').textContent=''; $('#finish').disabled=true;
+  const cont = $('#tiles'); cont.innerHTML='';
+  const letters = shuffle([...WORD.split('')]);
+  letters.forEach(ch=>{
+    const b=document.createElement('button'); b.className='tile'; b.textContent=ch; b.title=LETTER_HINTS[ch]||'';
+    b.onclick=()=>{
+      if(b.classList.contains('used')) return;
+      b.classList.add('used');
+      if(LETTER_HINTS[ch]){
+        const hb=$('#hintBox'); hb.style.display='block'; hb.textContent=`${ch} — ${LETTER_HINTS[ch]}`;
+      }
+      chosen.push(ch); $('#progressWord').textContent=chosen.join('');
+      if(chosen.join('')===WORD){
+        const pts = 30;
+        if(SCORE.tiles===0){ score+=pts; SCORE.tiles=pts; updateScoreViews(); }
+        $('#finish').disabled=false;
+      }
+    };
+    cont.appendChild(b);
+  });
+}
+
+/* ---------- Финиш ---------- */
+$('#finish').onclick=finishGame;
+function updateScoreViews(){
+  $('#scoreA').textContent=SCORE.quiz;
+  $('#scoreB').textContent=SCORE.sort;
+  $('#scoreC').textContent=SCORE.tiles;
+}
+function finishGame(){
+  clearInterval(timerId);
+  goto('#screen-result');
+  $('#finalScore').textContent=score;
+  drawBadge();
+  updatePools();
+
+  // Предзаполненная форма (если указана)
+  if(CONFIG.FORM_ID && CONFIG.ENTRY_NAME && CONFIG.ENTRY_SCORE){
+    $('#formLink').href = `https://docs.google.com/forms/d/e/${CONFIG.FORM_ID}/viewform?usp=pp_url&${CONFIG.ENTRY_NAME}=${encodeURIComponent(nameUser)}&${CONFIG.ENTRY_SCORE}=${score}`;
+  } else {
+    $('#formLink').style.display='none';
+  }
+}
+
+/* ---------- Бейдж ---------- */
+function drawBadge(){
+  const c=$('#badge'), g=c.getContext('2d');
+  // фон
+  const grd = g.createLinearGradient(0,0,c.width,c.height);
+  grd.addColorStop(0,'#101a34'); grd.addColorStop(.5,'#1b2a55'); grd.addColorStop(1,'#0b1020');
+  g.fillStyle=grd; g.fillRect(0,0,c.width,c.height);
+
+  // верхняя плашка
+  const grd2 = g.createLinearGradient(0,0,c.width,0);
+  grd2.addColorStop(0,CONFIG.gradientA); grd2.addColorStop(1,CONFIG.gradientB);
+  g.fillStyle=grd2; g.fillRect(0,0,c.width,18);
+
+  // заголовок
+  g.fillStyle='#fff';
+  g.font='bold 48px system-ui'; g.fillText(CONFIG.brand, 40, 90);
+  g.font='24px system-ui'; g.fillStyle='rgba(255,255,255,.85)'; g.fillText('Онлайн-квест «Разные — но вместе»', 40, 125);
+
+  // имя и очки
+  g.fillStyle='#fff'; g.font='28px system-ui';
+  g.fillText('Участник:', 40, 200);
+  g.font='bold 44px system-ui'; g.fillStyle='#dbeafe';
+  fitText(g, nameUser, 40, 250, 820, 'bold 44px system-ui');
+
+  g.fillStyle='#fff'; g.font='28px system-ui';
+  g.fillText('Итоговый результат:', 40, 330);
+  g.font='bold 64px system-ui'; g.fillStyle='#a5b4fc';
+  g.fillText(`${score} очков`, 40, 400);
+
+  // ценности (лента)
+  const values = ['Единые цели','Доверие','Инициатива','Наставничество','Сотрудничество','Трудолюбие','Вовлечённость','Ответственность'];
+  g.font='22px system-ui'; g.fillStyle='rgba(255,255,255,.9)';
+  let x=40,y=480;
+  values.forEach(v=>{
+    const w=g.measureText(v).width+26;
+    if(x+w>c.width-40){ x=40; y+=46; }
+    roundRect(g,x,y,w,36,'rgba(255,255,255,.08)'); 
+    g.fillText(v, x+13, y+24);
+    x+=w+10;
+  });
+
+  // рамка
+  g.strokeStyle='rgba(255,255,255,.15)'; g.lineWidth=2; g.strokeRect(20,20,c.width-40,c.height-40);
+
+  // подписи
+  g.font='24px system-ui'; g.fillStyle='#86efac';
+  g.fillText('Я — часть команды ВТСТ', 40, c.height-90);
+  g.font='20px system-ui'; g.fillStyle='rgba(255,255,255,.7)';
+  g.fillText('Разные — но вместе • Отметь @ВТСТ.LIVE', 40, c.height-50);
+
+  // кнопки
+  $('#downloadBadge').onclick=()=>{
+    const a=document.createElement('a'); a.href=c.toDataURL('image/png'); a.download='VTSTLIVE_badge.png'; a.click();
+  };
+  $('#copyShare').onclick=()=>{
+    const text = `Прошёл(ла) онлайн-квест ${CONFIG.brand} «Разные — но вместе» — ${score} очков! #ВТСТ #ВТСТLIVE #МыВместе`;
+    navigator.clipboard.writeText(text).then(()=>alert('Текст скопирован — вставляй в сторис/пост!'));
+  };
+}
+function roundRect(g,x,y,w,h,stroke){ g.fillStyle='transparent'; g.strokeStyle=stroke; g.lineWidth=1.5; g.beginPath(); g.moveTo(x+10,y); g.lineTo(x+w-10,y); g.quadraticCurveTo(x+w,y,x+w,y+10); g.lineTo(x+w,y+h-10); g.quadraticCurveTo(x+w,y+h,x+w-10,y+h); g.lineTo(x+10,y+h); g.quadraticCurveTo(x,y+h,x,y+h-10); g.lineTo(x,y+10); g.quadraticCurveTo(x,y,x+10,y); g.closePath(); g.stroke(); }
+function fitText(ctx, text, x, y, maxWidth, baseFont) {
+  let size = parseInt(baseFont.match(/\d+/)[0],10);
+  ctx.font=baseFont;
+  while(ctx.measureText(text).width>maxWidth && size>18){ size-=2; ctx.font=baseFont.replace(/\d+px/, size+'px'); }
+  ctx.fillText(text, x, y);
+}
+
+/* ---------- Копилка (локальная/глобальная) ---------- */
+async function updatePools(){
+  // Локальная (на устройстве)
+  const prev = parseInt(localStorage.getItem(LOCAL_POOL_KEY)||'0',10);
+  const localTotal = prev + score;
+  localStorage.setItem(LOCAL_POOL_KEY, String(localTotal));
+
+  // По умолчанию показываем локальную
+  let label='Локальная (на этом устройстве)', total=localTotal;
+
+  // Глобальная через Google Sheets CSV, если указали URL
+  if(CONFIG.SHEET_CSV_URL){
+    try{
+      const resp = await fetch(CONFIG.SHEET_CSV_URL, {cache:'no-store'});
+      if(resp.ok){
+        const csv = await resp.text();
+        const sum = sumCSV(csv);
+        if(Number.isFinite(sum)){
+          label='Глобальная (по данным таблицы)';
+          total=sum;
+        }
+      }
+    }catch(e){ /* тихий фоллбэк на локальную */ }
+  }
+
+  $('#poolLabel').textContent=label;
+  $('#poolTotal').textContent=total;
+  const pct = Math.max(5, Math.min(100, (total%1000)/10)); // простая визуализация прогресса
+  $('#poolBar').style.width = pct+'%';
+}
+function sumCSV(csv){
+  const lines = csv.trim().split(/\r?\n/);
+  if(lines.length<2) return NaN;
+  const headers = lines[0].split(',').map(h=>h.trim().toLowerCase());
+  const idx = headers.findIndex(h=>h==='score' || h==='scores' || h==='очки');
+  if(idx<0) return NaN;
+  let s=0;
+  for(let i=1;i<lines.length;i++){
+    const cells = lines[i].split(',');
+    const v = parseFloat(cells[idx]);
+    if(Number.isFinite(v)) s+=v;
+  }
+  return s;
+}
+</script>
+</body>
+</html>
